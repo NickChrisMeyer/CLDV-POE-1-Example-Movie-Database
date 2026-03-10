@@ -1,8 +1,13 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="p-4 p-md-5 mb-4 rounded-3 bg-light border shadow-sm">
+    <h1 class="display-6 fw-semibold">Movie Booking Dashboard</h1>
+    <p class="lead mb-4">Manage movies, cinemas, and screening schedules with overlap validation.</p>
+    <div class="d-flex gap-2 flex-wrap">
+        <a asp-controller="Movies" asp-action="Index" class="btn btn-primary">Manage Movies</a>
+        <a asp-controller="Cinemas" asp-action="Index" class="btn btn-outline-primary">Manage Cinemas</a>
+        <a asp-controller="Screenings" asp-action="Index" class="btn btn-outline-dark">View Screenings</a>
+    </div>
 </div>

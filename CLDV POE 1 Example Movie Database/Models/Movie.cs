@@ -9,7 +9,7 @@
         [Required, StringLength(40)]
         public string Title { get; set; } = string.Empty;
 
-        [Required, StringLength(40)]
+        [Required, StringLength(40) ]
         public string Genre { get; set; }
 
         [DataType(DataType.Date)]
