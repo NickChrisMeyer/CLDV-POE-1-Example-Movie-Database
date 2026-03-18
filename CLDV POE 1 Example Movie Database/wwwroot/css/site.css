@@ -94,15 +94,22 @@ body {
    giving the illusion of an infinite moving progress bar.
    ──────────────────────────────────────────────────────────────────────── */
 @keyframes slide-x {
-    0%   { transform: translateX(-100%); }
-    100% { transform: translateX(350%);  }
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(350%);
+    }
 }
 
 /* ── Apply Google Font to the whole page ────────────────────────────────
    'Inter' is loaded via the <link> tag in _Layout.cshtml (Google Fonts CDN).
    sans-serif is the fallback in case the CDN is unavailable.
    ──────────────────────────────────────────────────────────────────────── */
-body { font-family: 'Inter', sans-serif; }
+body {
+    font-family: 'Inter', sans-serif;
+}
 
 /* ── Hero section ───────────────────────────────────────────────────────
    Uses CSS custom properties (var()) defined in :root above.
@@ -131,10 +138,10 @@ body { font-family: 'Inter', sans-serif; }
     transition: transform .2s ease, box-shadow .2s ease;
 }
 
-.mv-stat-card:hover {
-    transform: translateY(-4px);      /* lifts the card 4px upward */
-    box-shadow: var(--shadow);        /* adds a dark drop-shadow */
-}
+    .mv-stat-card:hover {
+        transform: translateY(-4px); /* lifts the card 4px upward */
+        box-shadow: var(--shadow); /* adds a dark drop-shadow */
+    }
 
 /* ── Feature cards ──────────────────────────────────────────────────────
    display:flex + flex-direction:column + gap lets child elements stack
@@ -154,13 +161,15 @@ body { font-family: 'Inter', sans-serif; }
     transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
 }
 
-.feature-card:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow);
-    border-color: var(--accent);      /* border glows green on hover */
-}
+    .feature-card:hover {
+        transform: translateY(-6px);
+        box-shadow: var(--shadow);
+        border-color: var(--accent); /* border glows green on hover */
+    }
 
-.feature-card i { color: var(--accent); }
+    .feature-card i {
+        color: var(--accent);
+    }
 
 /* ── Footer ─────────────────────────────────────────────────────────────
    Dark background via var(--surface). Link colours are muted by default
@@ -174,6 +183,15 @@ body { font-family: 'Inter', sans-serif; }
     color: var(--muted);
 }
 
-.mv-footer a { color: var(--muted); text-decoration: none; }
-.mv-footer a:hover { color: var(--accent); }
-.mv-footer hr { border-color: var(--border); }
+    .mv-footer a {
+        color: var(--muted);
+        text-decoration: none;
+    }
+
+        .mv-footer a:hover {
+            color: var(--accent);
+        }
+
+    .mv-footer hr {
+        border-color: var(--border);
+    }
