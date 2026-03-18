@@ -35,6 +35,11 @@ namespace CLDV_POE_1_Example_Movie_Database
             name: "default",
             pattern: "{controller=Movies}/{action=Index}/{id?}");
 
+            using (var scope = app.Services.CreateScope())
+            {
+                SeedData.Initialize(scope.ServiceProvider);
+            }
+
             app.Run();
         }
     }

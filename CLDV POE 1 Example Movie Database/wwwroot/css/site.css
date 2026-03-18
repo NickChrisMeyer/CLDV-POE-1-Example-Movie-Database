@@ -1,31 +1,179 @@
+:root {
+    --bg: #0e0f13;
+    --surface: #121622;
+    --panel: #151a28;
+    --text: #e7e7ea;
+    --muted: #8a8f9b;
+    --border: #232a3c;
+    --accent: #7bd88f;
+    --size: 32px; /* global loader size */
+    --speed: 1; /* multiplier (1 = base) */
+    --radius: 12px;
+    --shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: #f8fafc;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+    color: var(--bs-secondary-color);
+    text-align: end;
 }
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+    text-align: start;
 }
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    display: grid;
+    place-items: center;
+    gap: 10px;
+    min-height: 140px;
+}
+
+    .card label {
+        color: var(--muted);
+        font-weight: 600;
+    }
+
+.loader {
+    display: inline-grid;
+    place-items: center;
+    will-change: transform, opacity;
+}
+
+/* 5) Bar Indeterminate */
+.bar-indeterminate {
+    width: 100%;
+    height: calc(var(--size)/3.2);
+    background: rgba(255,255,255,.06);
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+}
+
+    .bar-indeterminate::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, transparent 0%, var(--accent) 50%, transparent 100%);
+        width: 40%;
+        border-radius: inherit;
+        animation: slide-x calc(1.2s * var(--speed)) ease-in-out infinite;
+    }
+
+/* ── Fix: missing @keyframes for the loading bar animation ──────────────
+   The .bar-indeterminate::before pseudo-element references this animation
+   (line above). Without this definition the bar would be static.
+   translateX moves the gradient stripe from left (-100%) to right (350%)
+   giving the illusion of an infinite moving progress bar.
+   ──────────────────────────────────────────────────────────────────────── */
+@keyframes slide-x {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(350%);  }
+}
+
+/* ── Apply Google Font to the whole page ────────────────────────────────
+   'Inter' is loaded via the <link> tag in _Layout.cshtml (Google Fonts CDN).
+   sans-serif is the fallback in case the CDN is unavailable.
+   ──────────────────────────────────────────────────────────────────────── */
+body { font-family: 'Inter', sans-serif; }
+
+/* ── Hero section ───────────────────────────────────────────────────────
+   Uses CSS custom properties (var()) defined in :root above.
+   This means changing --surface or --accent at the top changes every
+   component that references it — a single source of truth for theming.
+   ──────────────────────────────────────────────────────────────────────── */
+.mv-hero {
+    background: linear-gradient(135deg, var(--surface) 0%, #1a2040 100%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 3.5rem 2rem;
+    margin-bottom: 2rem;
+    color: var(--text);
+}
+
+/* ── Stat cards ─────────────────────────────────────────────────────────
+   transition: .2s ease on transform and box-shadow makes the hover
+   animation smooth instead of an abrupt jump.
+   ──────────────────────────────────────────────────────────────────────── */
+.mv-stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem 1rem;
+    color: var(--text);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.mv-stat-card:hover {
+    transform: translateY(-4px);      /* lifts the card 4px upward */
+    box-shadow: var(--shadow);        /* adds a dark drop-shadow */
+}
+
+/* ── Feature cards ──────────────────────────────────────────────────────
+   display:flex + flex-direction:column + gap lets child elements stack
+   vertically with consistent spacing. mt-auto on the CTA button pushes
+   it to the bottom regardless of how much body text the card has.
+   ──────────────────────────────────────────────────────────────────────── */
+.feature-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    height: 100%;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow);
+    border-color: var(--accent);      /* border glows green on hover */
+}
+
+.feature-card i { color: var(--accent); }
+
+/* ── Footer ─────────────────────────────────────────────────────────────
+   Dark background via var(--surface). Link colours are muted by default
+   and change to --accent (green) on hover — consistent with the rest of
+   the design system.
+   ──────────────────────────────────────────────────────────────────────── */
+.mv-footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 3rem 0 1.5rem;
+    color: var(--muted);
+}
+
+.mv-footer a { color: var(--muted); text-decoration: none; }
+.mv-footer a:hover { color: var(--accent); }
+.mv-footer hr { border-color: var(--border); }

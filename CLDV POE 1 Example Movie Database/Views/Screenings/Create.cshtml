@@ -1,0 +1,45 @@
+@model CLDV_POE_1_Example_Movie_Database.Models.Screening
+@{
+    ViewData["Title"] = "Schedule Screening";
+}
+
+<h1 class="mb-3">Schedule Screening</h1>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+
+            <div class="mb-3">
+                <label asp-for="MovieId" class="form-label"></label>
+                <select asp-for="MovieId" asp-items="ViewBag.MovieId" class="form-select"></select>
+                <span asp-validation-for="MovieId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CinemaId" class="form-label"></label>
+                <select asp-for="CinemaId" asp-items="ViewBag.CinemaId" class="form-select"></select>
+                <span asp-validation-for="CinemaId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="StartTime" class="form-label"></label>
+                <input asp-for="StartTime" class="form-control" type="datetime-local" />
+                <span asp-validation-for="StartTime" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="EndTime" class="form-label"></label>
+                <input asp-for="EndTime" class="form-control" type="datetime-local" />
+                <span asp-validation-for="EndTime" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

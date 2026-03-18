@@ -29,6 +29,9 @@
 
             _db.Movies.Add(movie);
             await _db.SaveChangesAsync();
+            //Display confirm message
+            Thread.Sleep(5000);
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -63,6 +66,13 @@
             var movie = await _db.Movies.FindAsync(id);
             if (movie is not null)
             {
+                var hasScreenings = await _db.Screenings.AnyAsync(s => s.MovieId == id);
+                if (hasScreenings)
+                {
+                    ModelState.AddModelError(string.Empty, "Cannot delete this movie because it has scheduled screenings.");
+                    return View(movie);
+                }
+
                 _db.Movies.Remove(movie);
                 await _db.SaveChangesAsync();
             }

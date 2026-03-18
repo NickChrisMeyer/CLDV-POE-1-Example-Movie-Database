@@ -1,0 +1,41 @@
+@model IEnumerable<CLDV_POE_1_Example_Movie_Database.Models.Movie>
+@{
+    ViewData["Title"] = "Movies";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="mb-0">Movies</h1>
+    <a asp-action="Create" class="btn btn-primary">Add Movie</a>
+</div>
+
+<div class="table-responsive shadow-sm rounded">
+    <table class="table table-striped table-hover mb-0">
+        <thead class="table-dark">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Title)</th>
+                <th>@Html.DisplayNameFor(model => model.Genre)</th>
+                <th>@Html.DisplayNameFor(model => model.ReleaseDate)</th>
+                <th>Poster</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>@item.Genre</td>
+                <td>@item.ReleaseDate.ToString("yyyy-MM-dd")</td>
+                <td>
+                    <img src="@item.PosterUrl" alt="@item.Title" class="rounded" style="width:56px;height:84px;object-fit:cover;" />
+                </td>
+                <td class="text-end">
+                    <a asp-action="Details" asp-route-id="@item.MovieId" class="btn btn-sm btn-outline-secondary">Details</a>
+                    <a asp-action="Edit" asp-route-id="@item.MovieId" class="btn btn-sm btn-outline-primary">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.MovieId" class="btn btn-sm btn-outline-danger">Delete</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

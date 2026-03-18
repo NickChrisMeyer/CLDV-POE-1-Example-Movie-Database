@@ -1,19 +1,48 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - CLDV_POE_1_Example_Movie_Database</title>
+    <title>@ViewData["Title"] - MovieVault</title>
     <script type="importmap"></script>
+    <!-- These below describe styling load order -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CLDV_POE_1_Example_Movie_Database.styles.css" asp-append-version="true" />
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         STEP 1: Google Fonts
+         Visit https://fonts.google.com, pick a font, click "Get font",
+         then "Get embed code" → copy the <link> tag below.
+         The font won't download onto your machine — the browser fetches it
+         from Google's servers the first time a visitor loads the page.
+         ═══════════════════════════════════════════════════════════════ -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         STEP 2: Font Awesome 6 Free
+         5000+ icons available as simple <i> tags.
+         Find icons at: https://fontawesome.com/icons (filter: Free)
+         CDN source: https://cdnjs.cloudflare.com (search "font-awesome")
+         Usage: <i class="fa-solid fa-film"></i>
+         ═══════════════════════════════════════════════════════════════ -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         STEP 3: AOS — Animate On Scroll (CSS part)
+         Adds data-aos="fade-up" / "fade-right" / "zoom-in" attributes
+         that trigger CSS animations as the user scrolls down.
+         Library: https://michalsnik.github.io/aos/
+         CDN source: https://unpkg.com/aos@2.3.4/dist/aos.css
+         The matching JS is loaded at the bottom of this file.
+         ═══════════════════════════════════════════════════════════════ -->
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-4">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CLDV_POE_1_Example_Movie_Database</a>
+                <a class="navbar-brand fw-semibold" asp-area="" asp-controller="Movies" asp-action="Index">MovieVault</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -21,10 +50,25 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <!-- Font Awesome icon added with me-1 (Bootstrap margin-end utility) for spacing -->
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
+                                <i class="fa-solid fa-house me-1"></i> Home
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" asp-area="" asp-controller="Movies" asp-action="Index">
+                                <i class="fa-solid fa-film me-1"></i> Movies
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Cinemas" asp-action="Index">
+                                <i class="fa-solid fa-building me-1"></i> Cinemas
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Screenings" asp-action="Index">
+                                <i class="fa-solid fa-calendar-days me-1"></i> Screenings
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -37,14 +81,61 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <!-- ═══════════════════════════════════════════════════════════════
+         FOOTER: Multi-column layout using Bootstrap grid
+         .mv-footer styles are in site.css (dark background using CSS vars)
+         row/col-md-4 = three equal columns that stack on mobile
+         ═══════════════════════════════════════════════════════════════ -->
+    <footer class="mv-footer mt-5">
         <div class="container">
-            &copy; 2026 - CLDV_POE_1_Example_Movie_Database - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="row g-4 mb-3">
+
+                <!-- Column 1: Brand + tagline -->
+                <div class="col-md-4">
+                    <h5 class="fw-bold mb-2" style="color: var(--text);">
+                        <i class="fa-solid fa-film me-2" style="color: var(--accent);"></i>MovieVault
+                    </h5>
+                    <p class="small mb-0">A demo MVC app built for CLDV6211. Manage movies, cinemas, and screening schedules.</p>
+                </div>
+
+                <!-- Column 2: Quick links -->
+                <div class="col-md-4">
+                    <h6 class="fw-semibold mb-2" style="color: var(--text);">Quick Links</h6>
+                    <ul class="list-unstyled small mb-0">
+                        <li><a asp-controller="Home" asp-action="Index"><i class="fa-solid fa-house fa-fw me-1"></i>Home</a></li>
+                        <li><a asp-controller="Movies" asp-action="Index"><i class="fa-solid fa-film fa-fw me-1"></i>Movies</a></li>
+                        <li><a asp-controller="Cinemas" asp-action="Index"><i class="fa-solid fa-building fa-fw me-1"></i>Cinemas</a></li>
+                        <li><a asp-controller="Screenings" asp-action="Index"><i class="fa-solid fa-calendar-days fa-fw me-1"></i>Screenings</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Built With -->
+                <div class="col-md-4">
+                    <h6 class="fw-semibold mb-2" style="color: var(--text);">Built With</h6>
+                    <ul class="list-unstyled small mb-0">
+                        <li><i class="fa-brands fa-microsoft fa-fw me-1"></i>ASP.NET Core MVC</li>
+                        <li><i class="fa-solid fa-database fa-fw me-1"></i>Entity Framework Core</li>
+                        <li><i class="fa-brands fa-bootstrap fa-fw me-1"></i>Bootstrap 5</li>
+                        <li><i class="fa-solid fa-icons fa-fw me-1"></i>Font Awesome 6</li>
+                    </ul>
+                </div>
+
+            </div>
+            <hr />
+            <p class="text-center small mb-0">&copy; 2026 MovieVault</p>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         AOS JavaScript — must be loaded AFTER the page content
+         Call AOS.init() in a section Scripts block in each view that uses it
+         ═══════════════════════════════════════════════════════════════ -->
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

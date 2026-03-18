@@ -1,8 +1,216 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@{
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SECTION A: HERO PANEL
+     ─────────────────────────────────────────────────────────────────────
+     .mv-hero is a custom class defined in site.css.
+     It uses CSS custom properties (var(--surface), var(--text), etc.)
+     so the dark-panel look is controlled from a single :root block.
+
+     data-aos="fade-up" — AOS attribute: this element fades upward into view
+     when it enters the viewport. AOS.init() (below) activates all data-aos
+     attributes on the page.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<div class="mv-hero">
+    <div data-aos="fade-up">
+        <h1 class="display-4 fw-bold mb-3">
+            <i class="fa-solid fa-film me-2" style="color: var(--accent);"></i>
+            Welcome to MovieVault
+        </h1>
+        <p class="lead mb-4" style="color: var(--muted);">
+            Manage movies, cinemas, and screening schedules — all in one place.
+            Built with ASP.NET Core MVC and Entity Framework Core.
+        </p>
+
+        <!-- CTA buttons: btn-success uses Bootstrap's green; the outline variant is more subtle -->
+        <div class="d-flex gap-2 flex-wrap">
+            <a asp-controller="Movies" asp-action="Index" class="btn btn-success btn-lg">
+                <i class="fa-solid fa-film me-2"></i>Browse Movies
+            </a>
+            <a asp-controller="Screenings" asp-action="Index" class="btn btn-outline-light btn-lg">
+                <i class="fa-solid fa-calendar-days me-2"></i>View Screenings
+            </a>
+        </div>
+    </div>
 </div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SECTION B: STATS STRIP
+     ─────────────────────────────────────────────────────────────────────
+     Bootstrap grid: row g-3 = row with 3-unit gutter between columns.
+     col-md-4 = each card takes 4/12 columns (= 1/3 width) on medium+ screens.
+     On small screens (< 768px) Bootstrap stacks them to full width automatically.
+
+     data-aos-delay staggering: cards animate in sequence (0ms, 100ms, 200ms)
+     creating a "wave" effect instead of all three appearing simultaneously.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<div class="row g-3 mb-4">
+
+    <!-- Stat Card 1: Movies -->
+    <div class="col-md-4" data-aos="fade-up" data-aos-delay="0">
+        <div class="mv-stat-card text-center">
+            <!-- fa-2x = Font Awesome size modifier (2× the base size) -->
+            <i class="fa-solid fa-film fa-2x mb-2" style="color: var(--accent);"></i>
+            <h2 class="fw-bold mb-0">3</h2>
+            <p class="mb-0" style="color: var(--muted);">Movies</p>
+        </div>
+    </div>
+
+    <!-- Stat Card 2: Cinemas -->
+    <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="mv-stat-card text-center">
+            <i class="fa-solid fa-building fa-2x mb-2" style="color: var(--accent);"></i>
+            <h2 class="fw-bold mb-0">2</h2>
+            <p class="mb-0" style="color: var(--muted);">Cinemas</p>
+        </div>
+    </div>
+
+    <!-- Stat Card 3: Screenings -->
+    <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="mv-stat-card text-center">
+            <i class="fa-solid fa-calendar-days fa-2x mb-2" style="color: var(--accent);"></i>
+            <h2 class="fw-bold mb-0">3</h2>
+            <p class="mb-0" style="color: var(--muted);">Screenings</p>
+        </div>
+    </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SECTION C: FEATURE CARDS
+     ─────────────────────────────────────────────────────────────────────
+     .feature-card (not .card!) is used here to avoid inheriting the
+     display:grid / place-items:center override on .card in site.css.
+
+     The section heading uses data-aos="fade-right" — a different animation
+     direction to show students that AOS supports multiple directions:
+     fade-up, fade-down, fade-left, fade-right, zoom-in, flip-left, etc.
+
+     h-100 (Bootstrap) + height:100% (.feature-card in CSS) = equal-height cards
+     within a row, regardless of how much text each card contains.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<h2 class="fw-semibold mb-3" data-aos="fade-right" style="color: #1e293b;">
+    <i class="fa-solid fa-layer-group me-2" style="color: var(--accent);"></i>
+    Explore the App
+</h2>
+<div class="row g-4 mb-4">
+
+    <!-- Feature Card 1: Movies -->
+    <div class="col-md-4" data-aos="fade-up" data-aos-delay="0">
+        <div class="feature-card">
+            <i class="fa-solid fa-film fa-2x"></i>
+            <h5 class="fw-semibold mb-0">Movies</h5>
+            <p class="mb-0" style="color: var(--muted); font-size: .9rem;">
+                Add, edit, and delete movies. Each record stores the title, genre,
+                duration, and release date.
+            </p>
+            <a asp-controller="Movies" asp-action="Index" class="btn btn-sm btn-outline-success mt-auto">
+                <i class="fa-solid fa-arrow-right me-1"></i>Go to Movies
+            </a>
+        </div>
+    </div>
+
+    <!-- Feature Card 2: Cinemas -->
+    <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="feature-card">
+            <i class="fa-solid fa-building fa-2x"></i>
+            <h5 class="fw-semibold mb-0">Cinemas</h5>
+            <p class="mb-0" style="color: var(--muted); font-size: .9rem;">
+                Manage cinema venues. Each cinema has a name, city, and seating
+                capacity used for screening validation.
+            </p>
+            <a asp-controller="Cinemas" asp-action="Index" class="btn btn-sm btn-outline-success mt-auto">
+                <i class="fa-solid fa-arrow-right me-1"></i>Go to Cinemas
+            </a>
+        </div>
+    </div>
+
+    <!-- Feature Card 3: Screenings -->
+    <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="feature-card">
+            <i class="fa-solid fa-calendar-days fa-2x"></i>
+            <h5 class="fw-semibold mb-0">Screenings</h5>
+            <p class="mb-0" style="color: var(--muted); font-size: .9rem;">
+                Schedule screenings by linking a movie to a cinema. Overlap
+                validation prevents double-booking a screen.
+            </p>
+            <a asp-controller="Screenings" asp-action="Index" class="btn btn-sm btn-outline-success mt-auto">
+                <i class="fa-solid fa-arrow-right me-1"></i>Go to Screenings
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SECTION D: LIVE ALERT DEMO (Bootstrap JS interactivity)
+     ─────────────────────────────────────────────────────────────────────
+     This demonstrates two Bootstrap JS concepts:
+       1. Dynamically creating alert components with JavaScript
+       2. data-bs-dismiss="alert" — Bootstrap's built-in dismiss pattern.
+          Any element with this attribute will close its parent .alert
+          when clicked, without writing any additional JavaScript.
+
+     The indeterminate loading bar (.bar-indeterminate) shows a CSS
+     animation — the keyframes slide-x definition is in site.css.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<div class="container my-4 px-0" data-aos="fade-up" data-aos-delay="100">
+    <h5 class="fw-semibold mb-3" style="color: #1e293b;">
+        <i class="fa-solid fa-bolt me-2" style="color: var(--accent);"></i>
+        Bootstrap JS Demo
+    </h5>
+
+    <!-- The indeterminate bar uses the .card class for the dark panel styling -->
+    <div class="card mb-3">
+        <div class="loader bar-indeterminate" aria-hidden="true"></div>
+        <label>Indeterminate Loading Bar (CSS animation)</label>
+    </div>
+
+    <!-- #liveAlertPlaceholder: empty div that JavaScript injects alerts into -->
+    <div id="liveAlertPlaceholder"></div>
+    <button type="button" class="btn btn-primary" id="liveAlertBtn">
+        <i class="fa-solid fa-bell me-1"></i>Show live alert
+    </button>
+</div>
+
+@section Scripts {
+<script>
+    // ═══════════════════════════════════════════════════════════════════
+    // Bootstrap Live Alert Demo
+    // appendAlert() builds an alert HTML string and injects it into the
+    // placeholder div. data-bs-dismiss="alert" on the close button lets
+    // Bootstrap handle dismiss clicks automatically — no extra JS needed.
+    // ═══════════════════════════════════════════════════════════════════
+    const alertPlaceholder = document.getElementById('liveAlertPlaceholder');
+    const appendAlert = (message, type) => {
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = [
+            `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+            `   <div>${message}</div>`,
+            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+            '</div>'
+        ].join('');
+        alertPlaceholder.append(wrapper);
+    };
+
+    const alertTrigger = document.getElementById('liveAlertBtn');
+    if (alertTrigger) {
+        alertTrigger.addEventListener('click', () => {
+            appendAlert('Nice, you triggered this alert message!', 'success');
+        });
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // Initialize AOS (Animate On Scroll)
+    // Must be called after the page loads (this section Scripts block
+    // runs after _Layout.cshtml loads the AOS library at the bottom of <body>).
+    //
+    // Options:
+    //   duration  — how long each animation takes (milliseconds)
+    //   once      — true = animate only the first time (better for demos)
+    // ═══════════════════════════════════════════════════════════════════
+    AOS.init({ duration: 700, once: true });
+</script>
+}
