@@ -3,7 +3,7 @@ on:
   push:
     branches: [ master, develop ]
 jobs:
-  b6uild:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
