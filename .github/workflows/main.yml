@@ -1,0 +1,15 @@
+name: MVC CI
+on:
+  push:
+    branches: [ master, develop ]
+jobs:
+  b6uild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0'
+      - run: dotnet restore
+      - run: dotnet build
+      - run: dotnet test
