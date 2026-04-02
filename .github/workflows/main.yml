@@ -1,15 +1,109 @@
-name: MVC CI
+name: MVC CI/CD Pipeline
 on:
   push:
     branches: [ master, develop ]
+  pull_request:
+    branches: [ master, develop ]
+
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-dotnet@v5
+      # ═════════════════════════════════════════════════════════════════
+      # Step 1: Checkout
+      # ─────────────────────────────────────────────────────────────────
+      # Clone the repository to the workflow runner
+      # ═════════════════════════════════════════════════════════════════
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      # ═════════════════════════════════════════════════════════════════
+      # Step 2: Setup .NET
+      # ─────────────────────────────────────────────────────────────────
+      # Install the required .NET SDK version
+      # ═════════════════════════════════════════════════════════════════
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.0'
-      - run: dotnet restore
-      - run: dotnet build
-      - run: dotnet test
+
+      # ═════════════════════════════════════════════════════════════════
+      # Step 3: Restore Dependencies
+      # ─────────────────────────────────────────────────────────────────
+      # Restore NuGet packages for the solution
+      # ═════════════════════════════════════════════════════════════════
+      - name: Restore dependencies
+        run: dotnet restore
+
+      # ═════════════════════════════════════════════════════════════════
+      # Step 4: Build Solution
+      # ─────────────────────────────────────────────────────────────────
+      # Compile the application in Release configuration
+      # ═════════════════════════════════════════════════════════════════
+      - name: Build project
+        run: dotnet build --configuration Release --no-restore
+
+      # ═════════════════════════════════════════════════════════════════
+      # Step 5: Run Tests with Code Coverage (Coverlet)
+      # ─────────────────────────────────────────────────────────────────
+      # Executes all unit tests and collects code coverage metrics
+      # using Coverlet. Coverage data is output in both:
+      #   - OpenCover format (XML): For detailed analysis & reports
+      #   - Cobertura format (XML): For GitHub-friendly summaries
+      # 
+      # Strict Enforcement: If ANY test fails, the workflow STOPS here.
+      # This is CI/CD best practice: never publish artifacts from a
+      # failed build.
+      # ═════════════════════════════════════════════════════════════════
+      - name: Run tests with code coverage
+        run: |
+          dotnet test --configuration Release --no-build \
+            --logger "trx;LogFileName=test-results.trx" \
+            --collect:"XPlat Code Coverage" \
+            -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover,cobertura
+
+      # ═════════════════════════════════════════════════════════════════
+      # Step 6: Upload Test Results as Artifact
+      # ─────────────────────────────────────────────────────────────────
+      # Publishes TRX (Visual Studio Test Result) files so students can
+      # download and review detailed test execution logs from the
+      # GitHub Actions UI, even if tests fail locally.
+      # ═════════════════════════════════════════════════════════════════
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: '**/test-results.trx'
+          retention-days: 30
+
+      # ═════════════════════════════════════════════════════════════════
+      # Step 7: Upload Code Coverage Reports as Artifact
+      # ─────────────────────────────────────────────────────────────────
+      # Publishes coverage reports (OpenCover & Cobertura XML formats)
+      # These can be integrated with code coverage visualization tools.
+      # ═════════════════════════════════════════════════════════════════
+      - name: Upload code coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage-reports
+          path: |
+            **/coverage.opencover.xml
+            **/coverage.cobertura.xml
+          retention-days: 30
+
+      # ═════════════════════════════════════════════════════════════════
+      # Step 8: Publish Build Artifacts (DLL/EXE)
+      # ─────────────────────────────────────────────────────────────────
+      # Publishes compiled assemblies and executable binaries.
+      # This demonstrates artifact retention for potential deployment
+      # or distribution to stakeholders.
+      # ═════════════════════════════════════════════════════════════════
+      - name: Publish build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: '**/bin/Release/net10.0/**'
+          retention-days: 30
